@@ -1,0 +1,58 @@
+#:kivy 1.10.1
+#:import Factory kivy.factory.Factory
+
+
+
+ScreenManager:
+    id: sm
+    LoadDialog:
+        id: ld
+        name: 'loader'
+        manager: sm
+    ResultScreen:
+        name: 'result'
+        manager: sm
+        data_file_text: ld.clean_data
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: app.stop()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.selection)
+
+
+<ResultScreen>:
+    FloatLayout:
+        Label:
+            text_size: root.width, None
+            text: root.label_text
+            on_ref_press: root.webopen()
+            markup: True
+            halign: 'center'
+
+<EndScreen>:
+    FloatLayout:    
+        Label:
+            text_size: root.width, None
+            text: root.label_text
+            markup: True
+            halign: 'center'
+        Button:
+            text: "Back to beginning"
+            pos_hint: {'x': 0.4, 'y': 0.7}
+            size_hint: 0.2, 0.2
+            on_press: root.go_to_start()
+            font_size: 12
